@@ -87,12 +87,29 @@ public class PrimeThread{
         Instant start = Instant.now();
 
         CountPrimesThread[] threadArray = new CountPrimesThread[threads];
+        int min = 0;
+        int threadsLeft = threads;
         for(int i = 0; i < threads; i++)
         {
+            if(threadsLeft == 0)
+            {
+                threadArray[i] = new CountPrimesThread(min, max);
+                threadArray[i].start();
+            } else {
+                threadArray[i] = new CountPrimesThread(min, ((max)*(3/4)));
+                
+                threadArray[i].start();
+                int dif = max - min;
+                min = dif * 3 / 4;
+                threadsLeft--;
+            }
             //Chunk our prime number up
-            threadArray[i] = new CountPrimesThread(i*(max/threads), (i + 1)*(max/threads));
-            threadArray[i].start();
+            // threadArray[i] = new CountPrimesThread(i*(max/threads), (i + 1)*(max/threads));
+            // threadArray[i].start();
         }
+
+
+
         for(int i = 0; i < threads; i++)
         {
             try {
