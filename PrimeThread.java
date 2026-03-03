@@ -88,19 +88,26 @@ public class PrimeThread{
 
         CountPrimesThread[] threadArray = new CountPrimesThread[threads];
         int min = 0;
-        int threadsLeft = threads;
+        int threadsLeft = threads - 1;
+        int adjMax = (max-min)*3/4;
         for(int i = 0; i < threads; i++)
         {
-            if(threadsLeft == 0)
+            if(threadsLeft == 0) // when we are the last thread
             {
+                // we want all of the rest
                 threadArray[i] = new CountPrimesThread(min, max);
                 threadArray[i].start();
-            } else {
-                threadArray[i] = new CountPrimesThread(min, ((max)*(3/4)));
-                
+            } else { // errors chunking here
+                // If we arent the last thread to make
+                // We want to go from min to 3/4 of the space
+                // adjMax = (max-min)*3/4;
+                threadArray[i] = new CountPrimesThread(min, adjMax);
+                System.out.println(adjMax);
                 threadArray[i].start();
-                int dif = max - min;
-                min = dif * 3 / 4;
+
+                //Move are selection
+                min = adjMax;
+                adjMax = min+((max-min)*3/4);
                 threadsLeft--;
             }
             //Chunk our prime number up
