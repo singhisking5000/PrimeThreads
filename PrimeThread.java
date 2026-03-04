@@ -16,6 +16,7 @@ public class PrimeThread{
         }
         public void run() {
             count = countPrimes(min,max);
+            total += count;
             System.out.println("There are " + count + 
                     " primes between " + min + " and " + max);
             sendBack(count);
@@ -89,7 +90,12 @@ public class PrimeThread{
         CountPrimesThread[] threadArray = new CountPrimesThread[threads];
         int min = 0;
         int threadsLeft = threads - 1;
-        int adjMax = (max-min)*3/4;
+        // with an extended amount of time spent on purely testing the best ratios
+        // 5/12ths sized partitions result in the best time, as when we go above or below that
+        // time begins to increase again
+        int a = 8;
+        int b = 12;
+        int adjMax = (max-min)*a/b;
         for(int i = 0; i < threads; i++)
         {
             if(threadsLeft == 0) // when we are the last thread
@@ -100,9 +106,6 @@ public class PrimeThread{
             } else { // errors chunking here
                 // If we arent the last thread to make
                 // We want to go from min to 3/4 of the space
-                // adjMax = (max-min)*3/4;
-                int a = 5;
-                int b = 12;
                 adjMax = min+((max-min)*a/b);
                 threadArray[i] = new CountPrimesThread(min, adjMax);
                 System.out.println(adjMax);
@@ -112,12 +115,7 @@ public class PrimeThread{
                 min = adjMax;
                 threadsLeft--;
             }
-            //Chunk our prime number up
-            // threadArray[i] = new CountPrimesThread(i*(max/threads), (i + 1)*(max/threads));
-            // threadArray[i].start();
         }
-
-
 
         for(int i = 0; i < threads; i++)
         {
@@ -127,6 +125,8 @@ public class PrimeThread{
                 e.printStackTrace();
             } 
         }
+
+        System.out.println("!!    There are " + total + " total primes between 0 and " + max + "    !!");
 
 
        
