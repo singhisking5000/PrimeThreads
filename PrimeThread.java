@@ -101,13 +101,15 @@ public class PrimeThread{
                 // If we arent the last thread to make
                 // We want to go from min to 3/4 of the space
                 // adjMax = (max-min)*3/4;
+                int a = 5;
+                int b = 12;
+                adjMax = min+((max-min)*a/b);
                 threadArray[i] = new CountPrimesThread(min, adjMax);
                 System.out.println(adjMax);
                 threadArray[i].start();
 
                 //Move are selection
                 min = adjMax;
-                adjMax = min+((max-min)*3/4);
                 threadsLeft--;
             }
             //Chunk our prime number up
