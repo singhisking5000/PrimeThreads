@@ -16,7 +16,7 @@ public class PrimeThread{
         }
         public void run() {
             count = countPrimes(min,max);
-            total += count;
+            // total += count;
             System.out.println("There are " + count + 
                     " primes between " + min + " and " + max);
             sendBack(count);
@@ -93,7 +93,7 @@ public class PrimeThread{
         // with an extended amount of time spent on purely testing the best ratios
         // 5/12ths sized partitions result in the best time, as when we go above or below that
         // time begins to increase again
-        int a = 8;
+        int a = 5;
         int b = 12;
         int adjMax = (max-min)*a/b;
         for(int i = 0; i < threads; i++)
